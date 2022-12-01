@@ -18,12 +18,27 @@ module Elves =
     type Elf with
 
         static member totalCalories elf =
-            elf.CarriedFood |> List.sumBy (fun food -> food.Calories)
+            elf.CarriedFood
+            |> List.sumBy (fun food -> food.Calories)
 
         static member maxTotalCalories elves =
             elves
             |> List.map Elf.totalCalories
             |> List.max
+
+        static member sumTotalCalories elves =
+            elves
+            |> List.map Elf.totalCalories
+            |> List.sum
+
+        static member orderByTotalCalories elves =
+            elves
+            |> List.sortByDescending Elf.totalCalories
+
+        static member filterHighestTotalCalories n elves =
+            elves
+            |> Elf.orderByTotalCalories
+            |> List.take n
 
     let private readCaloriesItem (input: string) : uint<Calories> option =
         match (input.Length, System.UInt32.TryParse(input)) with

@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="PuzzleInput.fs" />
     <Compile Include="ElvesReading.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
