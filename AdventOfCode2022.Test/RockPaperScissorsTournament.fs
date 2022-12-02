@@ -36,3 +36,21 @@ C Z
         let rounds = readStrategy Puzzle2_EncryptedStrategyGuide
         Assert.AreEqual(2500, rounds.Length)
         assertRound Paper Scissors rounds[0]
+
+    [<Test>]
+    let CanCalculateTotalExampleScore () =
+        let input =
+            """A Y
+B X
+C Z
+"""
+
+        let rounds = readStrategy input
+        let actual = totalScore rounds
+        Assert.AreEqual(15, actual)
+
+    [<Test>]
+    let CanSolveDay2Puzzle1 () =
+        let rounds = readStrategy Puzzle2_EncryptedStrategyGuide
+        let score = totalScore rounds
+        printfn $"Got a total score of %d{score} after playing %d{rounds.Length} rounds"

@@ -17,9 +17,26 @@ module RockPaperScissorsTournament =
     
     let handShapeScore shape =
         match shape with
-        | Rock -> 1
-        | Paper -> 2
-        | Scissors -> 3
+        | Rock -> 1u
+        | Paper -> 2u
+        | Scissors -> 3u
+
+    let outcomeScore round =
+        match (round.Opponent, round.Response) with
+        // draw
+        | op, res when op=res -> 3u
+        // win
+        | Rock, Paper | Paper, Scissors | Scissors, Rock -> 6u
+        // lose
+        | _ -> 0u
+
+    let roundScore round : Score =
+        handShapeScore round.Response
+        + outcomeScore round
+
+    let totalScore (rounds : RoundSelection list) =
+        rounds
+        |> List.sumBy roundScore
 
     let private readHandShape (input: char) : HandShape =
         match input with
