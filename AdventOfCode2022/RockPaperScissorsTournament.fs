@@ -9,47 +9,70 @@ module RockPaperScissorsTournament =
         | Paper
         | Scissors
 
-    type RoundSelection =
+    type RoundOutcome =
+        | Lose
+        | Draw
+        | Win
+
+    type RoundExpectation =
         { Opponent: HandShape
-          Response: HandShape }
+          ExpectedOutcome: RoundOutcome }
 
     type Score = uint
-    
+
     let handShapeScore shape =
         match shape with
         | Rock -> 1u
         | Paper -> 2u
         | Scissors -> 3u
 
-    let outcomeScore round =
-        match (round.Opponent, round.Response) with
+    let selectResponseForExpectation expectation =
+        match expectation.Opponent, expectation.ExpectedOutcome with
         // draw
-        | op, res when op=res -> 3u
+        | op, Draw -> op
         // win
-        | Rock, Paper | Paper, Scissors | Scissors, Rock -> 6u
+        | Rock, Win -> Paper
+        | Paper, Win -> Scissors
+        | Scissors, Win -> Rock
         // lose
+        | Rock, Lose -> Scissors
+        | Paper, Lose -> Rock
+        | Scissors, Lose -> Paper
+
+    let outcomeScore round =
+        match round.ExpectedOutcome with
+        | Draw -> 3u
+        | Win -> 6u
         | _ -> 0u
 
     let roundScore round : Score =
-        handShapeScore round.Response
+        let response = selectResponseForExpectation round
+        handShapeScore response
         + outcomeScore round
 
-    let totalScore (rounds : RoundSelection list) =
+    let totalScore (rounds: RoundExpectation list) =
         rounds
         |> List.sumBy roundScore
 
     let private readHandShape (input: char) : HandShape =
         match input with
-        | 'A' | 'X' -> Rock
-        | 'B' | 'Y' -> Paper
-        | 'C' | 'Z' -> Scissors
+        | 'A' -> Rock
+        | 'B' -> Paper
+        | 'C' -> Scissors
         | _ -> failwith $"Invalid hand shape input %c{input}"
 
-    let private readRoundSelection (input: string) : RoundSelection =
-        { Opponent = readHandShape input[0]
-          Response = readHandShape input[2] }
+    let private readOutcome (input: char) : RoundOutcome =
+        match input with
+        | 'X' -> Lose
+        | 'Y' -> Draw
+        | 'Z' -> Win
+        | _ -> failwith $"Invalid round outcome input %c{input}"
 
-    let private readStrategyFromEncryptedGuide (input: string seq) : RoundSelection list =
+    let private readRoundSelection (input: string) : RoundExpectation =
+        { Opponent = readHandShape input[0]
+          ExpectedOutcome = readOutcome input[2] }
+
+    let private readStrategyFromEncryptedGuide (input: string seq) : RoundExpectation list =
         input
         |> Seq.map readRoundSelection
         |> List.ofSeq
