@@ -4,5 +4,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Elves.fs" />
+    <Compile Include="RockPaperScissorsTournament.fs" />
   </ItemGroup>
 </Project>
