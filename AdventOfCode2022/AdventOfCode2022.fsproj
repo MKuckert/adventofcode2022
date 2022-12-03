@@ -5,5 +5,6 @@
   <ItemGroup>
     <Compile Include="Elves.fs" />
     <Compile Include="RockPaperScissorsTournament.fs" />
+    <Compile Include="Rucksacks.fs" />
   </ItemGroup>
 </Project>
