@@ -6,8 +6,16 @@ module Rucksacks =
     open Microsoft.FSharp.Core
 
     type Rucksack =
-        { FirstCompartment: string
-          SecondCompartmant: string }
+        { Description: string }
+        member this.FirstCompartment
+            with get () = this.Description.Substring(0, this.Description.Length/2)
+        member this.SecondCompartment
+            with get () = this.Description.Substring(this.Description.Length/2)
+
+    type ElfGroup = Rucksack list
+
+    [<Literal>]
+    let ElfGroupSize = 3
 
     let itemPriority (item: char) =
         if Char.IsLower(item) then
@@ -16,9 +24,18 @@ module Rucksacks =
             (int item) - (int 'A') + 27
 
     type Rucksack with
+        static member create input =
+            { Description = input }
+
         static member findSharedItem(rucksack: Rucksack) =
             rucksack.FirstCompartment.ToCharArray()
-            |> Array.filter rucksack.SecondCompartmant.Contains
+            |> Array.filter rucksack.SecondCompartment.Contains
+            |> Array.head
+
+        static member findSharedItem(group: ElfGroup) =
+            group[0].Description.ToCharArray()
+            |> Array.filter group[1].Description.Contains
+            |> Array.filter group[2].Description.Contains
             |> Array.head
 
         static member totalSharedItemPriority(rucksacks: Rucksack list) =
@@ -26,14 +43,17 @@ module Rucksacks =
             |> List.map Rucksack.findSharedItem
             |> List.map itemPriority
             |> List.sum
+        
+        static member findElfGroups(rucksacks: Rucksack list) : ElfGroup list =
+            rucksacks
+            |> List.chunkBySize ElfGroupSize
 
     let private readRucksackCompartments (input: string) =
         let len = input.Length / 2
 
-        { FirstCompartment = input.Substring(0, len)
-          SecondCompartmant = input.Substring(len) }
+        { Description = input }
 
     let readRucksack (input: string) =
         input.Split("\n", StringSplitOptions.RemoveEmptyEntries)
         |> List.ofSeq
-        |> List.map readRucksackCompartments
+        |> List.map Rucksack.create
