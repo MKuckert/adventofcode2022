@@ -12,6 +12,7 @@
     <Compile Include="ElvesReading.fs" />
     <Compile Include="RockPaperScissorsTournament.fs" />
     <Compile Include="Rucksacks.fs" />
+    <Compile Include="Sections.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
