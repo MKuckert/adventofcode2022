@@ -26,6 +26,12 @@ module Sections =
         Assert.IsFalse(List.containsAll [ 1; 2; 3 ] [ 2; 3; 4 ])
 
     [<Test>]
+    let ListOverlaps () =
+        Assert.IsFalse(List.overlaps [ 1; 2; 3 ] [ 4; 5; 6 ])
+        Assert.IsTrue(List.overlaps [ 2; 3 ] [ 1; 2; 3 ])
+        Assert.IsTrue(List.overlaps [ 1; 2; 3 ] [ 2; 3; 4 ])
+
+    [<Test>]
     let CanReadExampleInput () =
         let pairs = readRangePairs exampleInput
         Assert.AreEqual(6, pairs.Length)
@@ -38,12 +44,24 @@ module Sections =
 
     [<Test>]
     let CanFindContainedPairsInExampleInput () =
-        let containedPairs = readRangePairs exampleInput
-                             |> List.filter ElfPair.contained
-        Assert.AreEqual(2, containedPairs.Length)
+        let pairs = readRangePairs exampleInput
+                    |> List.filter ElfPair.contained
+        Assert.AreEqual(2, pairs.Length)
+
+    [<Test>]
+    let CanFindOverlappingPairsInExampleInput () =
+        let pairs = readRangePairs exampleInput
+                    |> List.filter ElfPair.overlapping
+        Assert.AreEqual(4, pairs.Length)
 
     [<Test>]
     let CanSolveDay4Puzzle1 () =
         let containedPairs = readRangePairs Puzzle4_Sections
                              |> List.filter ElfPair.contained
         printf $"Has {containedPairs.Length} pairs containing the other one"
+
+    [<Test>]
+    let CanSolveDay4Puzzle2 () =
+        let containedPairs = readRangePairs Puzzle4_Sections
+                             |> List.filter ElfPair.overlapping
+        printf $"Has {containedPairs.Length} pairs overlapping the other one"

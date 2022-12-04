@@ -9,6 +9,11 @@ module Sections =
             first
             |> List.forall (fun item -> List.contains item second)
 
+        let overlaps (first: 'T list) (second: 'T list) =
+            let laps = first
+                       |> List.filter (fun item -> List.contains item second)
+            laps.Length > 0
+
     type ElfPair = { First: int list; Second: int list }
 
     type ElfPair with
@@ -22,10 +27,14 @@ module Sections =
             let ranges = input.Split(",")
             { First = ElfPair.readRange ranges[0]
               Second = ElfPair.readRange ranges[1] }
-        
+
         static member contained pair =
             List.containsAll pair.First pair.Second
             || List.containsAll pair.Second pair.First
+
+        static member overlapping pair =
+            List.overlaps pair.First pair.Second
+            || List.overlaps pair.Second pair.First
 
     let readRangePairs (input: string) : ElfPair list =
         input.Split("\n", StringSplitOptions.RemoveEmptyEntries)
