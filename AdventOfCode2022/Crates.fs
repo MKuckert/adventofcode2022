@@ -64,6 +64,15 @@ module Crates =
         { Stacks: Stack list
           Movements: Movement list }
 
+    type Crane =
+        CrateMover9000
+        | CrateMover9001
+    type Crane with
+        static member take crane crates =
+            match crane with
+            | CrateMover9000 -> List.rev crates
+            | CrateMover9001 -> crates
+
     let crate name = { Name = name }
     let stack crates = { Crates = crates }
 
@@ -81,17 +90,18 @@ module Crates =
     let private regexMatchAll input pattern =
         Regex.Matches(input, pattern) |> Seq.map (fun g -> g.Value)
 
-    let private performOne (stacks: Stack list) (movement: Movement) =
+    let private performOne (crane: Crane) (stacks: Stack list) (movement: Movement) =
         let to' = movement.To - 1
         let from = movement.From - 1
         let taken, remaining = List.splitAt movement.Quantity stacks[from].Crates
-        let newTarget = stack (List.rev taken @ stacks[to'].Crates)
+        let newTarget = stack (Crane.take crane taken @ stacks[to'].Crates)
         let newSource = stack remaining
 
         stacks |> List.updateAt to' newTarget |> List.updateAt from newSource
 
-    let perform (stacks: Stack list) (movements: Movement list) =
-        movements |> List.fold performOne stacks
+    let perform (crane: Crane) (stacks: Stack list) (movements: Movement list) =
+        movements
+        |> List.fold (performOne crane) stacks
 
     let private parseCrates (input: string) =
         regexMatchAll input "\[.\]|    ?"

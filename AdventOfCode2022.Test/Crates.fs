@@ -51,14 +51,14 @@ move 1 from 1 to 2"""
         let movements = [
             move 1 1 2
         ]
-        let stacks' : Stack list = perform stacks movements
+        let stacks' : Stack list = perform Crane.CrateMover9000 stacks movements
         assertEqual 0 stacks'[0].Length
         assertEqual 2 stacks'[1].Length
 
     [<Test>]
     let canPerformSingleMovementFromExample () =
         let movements = [ exampleMovements[0] ]
-        let stacks' : Stack list = perform exampleStacks movements
+        let stacks' : Stack list = perform Crane.CrateMover9000 exampleStacks movements
         assertEqual 3 stacks'[0].Length
         assertEqual 2 stacks'[1].Length
         assertEqual 1 stacks'[2].Length
@@ -68,7 +68,7 @@ move 1 from 1 to 2"""
 
     [<Test>]
     let canPerformMovementsFromExample () =
-        let stacks' : Stack list = perform exampleStacks exampleMovements
+        let stacks' : Stack list = perform Crane.CrateMover9000 exampleStacks exampleMovements
         assertEqual 1 stacks'[0].Length
         assertEqual 1 stacks'[1].Length
         assertEqual 4 stacks'[2].Length
@@ -76,6 +76,11 @@ move 1 from 1 to 2"""
         assertStack [ 'M' ] stacks'[1]
         assertStack [ 'Z'; 'N'; 'D'; 'P' ] stacks'[2]
         assertMessage "CMZ" stacks'
+
+    [<Test>]
+    let canPerformMovementsMover9001FromExample () =
+        let stacks' : Stack list = perform Crane.CrateMover9001 exampleStacks exampleMovements
+        assertMessage "MCD" stacks'
 
     [<Test>]
     let canParseExample () =
@@ -95,5 +100,11 @@ move 1 from 1 to 2"""
     [<Test>]
     let canSolveDay5Puzzle1 () =
         let actual = parse Puzzle5_Crates
-        let result = perform actual.Stacks actual.Movements
+        let result = perform Crane.CrateMover9000 actual.Stacks actual.Movements
+        printf $"Resulting message is {Stack.topCrateNames result}"
+
+    [<Test>]
+    let canSolveDay5Puzzle2 () =
+        let actual = parse Puzzle5_Crates
+        let result = perform Crane.CrateMover9001 actual.Stacks actual.Movements
         printf $"Resulting message is {Stack.topCrateNames result}"
