@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Functions.fs" />
     <Compile Include="PuzzleInput.fs" />
     <Compile Include="ElvesReading.fs" />
     <Compile Include="RockPaperScissorsTournament.fs" />
@@ -15,6 +16,7 @@
     <Compile Include="Sections.fs" />
     <Compile Include="Crates.fs" />
     <Compile Include="StartMarker.fs" />
+    <Compile Include="NoSpaceLeft.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

@@ -9,5 +9,6 @@
     <Compile Include="Sections.fs" />
     <Compile Include="Crates.fs" />
     <Compile Include="StartMarker.fs" />
+    <Compile Include="NoSpaceLeft.fs" />
   </ItemGroup>
 </Project>

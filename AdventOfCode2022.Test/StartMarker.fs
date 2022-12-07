@@ -2,11 +2,9 @@ namespace AdventOfCode2022.Test
 
 module StartMarker =
     open NUnit.Framework
+    open AdventOfCode2022.Test.Functions
     open AdventOfCode2022.StartMarker
     open AdventOfCode2022.Test.PuzzleInput
-
-    let assertEqual expected actual =
-        Assert.AreEqual(expected, actual)
 
     [<TestCase("bvwbjplbgvbhsrlpgdmjqwftvncz", 5)>]
     [<TestCase("nppdvjthqldpwncqszvftbrmjlhg", 6)>]
