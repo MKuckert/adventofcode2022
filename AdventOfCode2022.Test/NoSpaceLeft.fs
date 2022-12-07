@@ -54,7 +54,7 @@ $ ls
     let canFindWithMaxSizeInExample () =
         let directories = parse exampleInput
                           |> layout
-                          |> directoriesWithMaxSize 100000u
+                          |> directoriesWithMaxSize 100_000u
         assertEqual 2 directories.Length
         assertEqual "a" directories[0].Name
         assertEqual "e" directories[1].Name
@@ -63,7 +63,20 @@ $ ls
     let canSolveDay7Puzzle1 () =
         let layout = parse Puzzle7_Directories |> layout
         let size = layout
-                   |> directoriesWithMaxSize 100000u
+                   |> filterDirectories (fun dir -> (dir |> Directory.size layout) <= 100_000u)
                    |> List.sumBy (fun dir -> Directory.size layout dir)
-        
+
         printf $"Total size of at most 100000 is {size}"
+
+    [<Test>]
+    let canSolveDay7Puzzle2 () =
+        let layout = parse Puzzle7_Directories |> layout
+        let usedSpace = Directory.size layout layout.root
+        let freeup = 30_000_000u + usedSpace - 70_000_000u
+
+        let smallest = layout
+                       |> filterDirectories (fun dir -> (dir |> Directory.size layout) > freeup)
+                       |> List.sortBy (fun dir -> dir |> Directory.size layout)
+                       |> List.head
+
+        printf $"Should delete directory {smallest.Name} with size {Directory.size layout smallest}"

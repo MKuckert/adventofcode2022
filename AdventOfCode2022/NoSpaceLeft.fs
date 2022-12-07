@@ -140,6 +140,9 @@ module NoSpaceLeft =
         |> List.fold layoutStep Layout.empty
         |> Layout.withCurrent 0
 
-    let directoriesWithMaxSize max (layout: Layout) =
+    let filterDirectories predicate (layout: Layout) =
         layout.Directories
-        |> List.filter (fun dir -> (dir |> Directory.size layout) <= max)
+        |> List.filter predicate
+
+    let directoriesWithMaxSize max (layout: Layout) =
+        filterDirectories (fun dir -> (dir |> Directory.size layout) <= max) layout
