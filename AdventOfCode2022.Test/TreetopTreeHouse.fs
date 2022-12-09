@@ -26,8 +26,8 @@ module TreetopTreeHouse =
     [<TestCase(3, 3, false)>] // 3 in the middle
     [<TestCase(3, 4, true)>] // 3 right of the middle
     let isVisibleInExampleInput x y expected =
-        let trees = parse exampleInput
-        let actual = isVisible trees x y
+        let actual = parse exampleInput
+                     |> isVisible x y
         assertEqual expected actual
 
     [<Test>]
@@ -39,3 +39,15 @@ module TreetopTreeHouse =
     let canSolveDay8Puzzle1 () =
         let visible = parse Puzzle8_Trees |> countVisibleTrees
         printf $"Has {visible} trees"
+
+    [<TestCase(1, 2, 4)>] // middle 5 in second row
+    [<TestCase(3, 2, 8)>] // middle 5 in fourth row
+    let scenicScoreInExampleInput x y expected =
+        let actual = parse exampleInput
+                     |> scenicScore x y
+        assertEqual expected actual
+
+    [<Test>]
+    let canSolveDay8Puzzle2 () =
+        let score = parse Puzzle8_Trees |> findHighestScenicScore 
+        printf $"Highest scenic score is {score}"
