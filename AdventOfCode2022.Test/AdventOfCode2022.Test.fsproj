@@ -17,6 +17,7 @@
     <Compile Include="Crates.fs" />
     <Compile Include="StartMarker.fs" />
     <Compile Include="NoSpaceLeft.fs" />
+    <Compile Include="TreetopTreeHouse.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
